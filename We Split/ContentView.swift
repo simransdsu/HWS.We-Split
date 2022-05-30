@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var checkAmount: Double = 0.0
     @State private var numberOfPeople = 0
     @State private var tipPercentage = 15
+    @FocusState private var amountIsFocused: Bool
     
     private var totalPerPerson: Double {
         
@@ -34,6 +35,7 @@ struct ContentView: View {
                               value: $checkAmount,
                               format: .currency(code: Locale.current.currencyCode ?? "USD"))
                     .keyboardType(.decimalPad)
+                    .focused($amountIsFocused)
                     
                     Picker("Number of people", selection: $numberOfPeople) {
                         ForEach(2..<100) { number in
@@ -55,6 +57,13 @@ struct ContentView: View {
                          format: .currency(code: Locale.current.currencyCode ?? "USD"))
                 }
             }.navigationTitle("We Split")
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            amountIsFocused = false
+                        }
+                    }
+                }
         }
     }
 }
